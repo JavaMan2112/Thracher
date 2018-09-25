@@ -1,0 +1,226 @@
+package com.company;
+
+import javax.swing.*;
+
+public class Main{
+
+    public static void main (String[]args){
+
+     Test window = new Test();
+     window.setResizable(false);
+     window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+     window.setLocationRelativeTo(null);
+     window.setSize(300, 150);
+     window.setVisible(true);
+
+    }
+}
+
+-------------------------------------------------------------------------------------------
+
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+import java.net.URL;
+
+    public class Test extends JFrame {
+
+        private JButton button;
+        private JTextField textf1;
+        private JTextField textf2;
+        private JTextField textf3;
+        private JPasswordField pass;
+
+        Test(){
+            super("GUI");
+            setLayout(new FlowLayout());
+
+
+            Icon Logo1 = new ImageIcon(getClass().getResource("Logo1.png"));
+            Icon Logo2 = new ImageIcon(getClass().getResource("Logo2.png"));
+
+            button = new JButton("Кнопка", Logo1);
+            button.setRolloverIcon(Logo2);
+            button.setToolTipText("Ссылка на URL");
+            add(button);
+
+            textf1 = new JTextField(10);
+            add(textf1);
+
+            textf2 = new JTextField("Введите текст", 10);
+            textf2.setToolTipText("Введите сюда ваш текст");
+            add(textf2);
+
+            textf3 = new JTextField("Это поле нельзя менять", 10);
+            textf3.setEditable(false);
+            textf3.setToolTipText("Это поле заблокировано");
+            add(textf3);
+
+            pass = new JPasswordField(4);
+            pass.setToolTipText("Введите сюда ваш пароль с 5 символов");
+            add(pass);
+
+            Actions actions = new Actions();
+            button.addActionListener(actions);
+            textf1.addActionListener(actions);
+            textf2.addActionListener(actions);
+            textf3.addActionListener(actions);
+            pass.addActionListener(actions);
+        }
+
+        public class Actions implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = "";
+
+                if (e.getSource() == button)
+                    try {
+                        Desktop.getDesktop().browse(new URL("http://google.com").toURI());
+                        JOptionPane.showMessageDialog(null, "Спасибо, вы осущеcтвили переход по ссылке");
+                    }catch (Exception ee){}
+
+                if (e.getSource() == textf1)
+                    str = String.format( e.getActionCommand());
+                else if (e.getSource() == textf2)
+                    str = String.format(e.getActionCommand());
+                else if (e.getSource() == textf3)
+                    str = String.format( e.getActionCommand());
+                else if (e.getSource() == pass)
+                    str = String.format("Ваш пароль: %s", e.getActionCommand());
+
+                JOptionPane.showMessageDialog(null, str);
+
+            }
+        }
+
+
+    }
+
+-----------------------------------------------------------------------------------------------------------
+МЕНЯЕМ ШРИФТ ЖИРНЫЙ И НАКЛОННЫЙ!!!
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+public class GUI extends JFrame {
+
+    private JTextField textField;
+
+    private JCheckBox boldBox;
+    private JCheckBox italicBox;
+
+    public GUI(){
+        super("GUI");
+
+        setLayout(new FlowLayout());
+
+        textField = new JTextField("Это пробный тест", 10);
+        textField.setFont(new Font("serif", Font.PLAIN, 14));
+
+        boldBox = new JCheckBox("Жирный!");
+        italicBox = new JCheckBox("Наклонный");
+        add(textField);
+        add(boldBox);
+        add(italicBox);
+
+        HandlerClass obrabotka = new HandlerClass();
+        boldBox.addItemListener(obrabotka);
+        italicBox.addItemListener(obrabotka);
+    }
+    private class HandlerClass implements ItemListener{
+
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            Font font = null;
+            if (boldBox.isSelected() && italicBox.isSelected())
+                font = new Font("serif", Font.BOLD + Font.ITALIC, 14);
+            if (boldBox.isSelected())
+                font = new Font("selif", Font.BOLD, 14);
+            if (italicBox.isSelected())
+                font = new Font("selif", Font.ITALIC, 14);
+
+            textField.setFont(font);
+        }
+    }
+}
+-------------------------------------------------------------------------------------------------------------
+РадиоБаттон Шрифты
+
+package com.company;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+public class GUI extends JFrame {
+
+    private JTextField textField;
+    private Font PF;
+    private Font BIF;
+
+    private JRadioButton radioPF;
+    private JRadioButton radioBIF;
+
+    private ButtonGroup buttonGroup;
+
+    public GUI(){
+        super("GUI");
+        setLayout(new FlowLayout());
+
+        textField = new JTextField("Приветствую вас", 20);
+        add(textField);
+
+        radioPF = new JRadioButton("Простой", true);
+        radioBIF = new JRadioButton("Жирный и наклонный", false);
+        add(radioPF);
+        add(radioBIF);
+
+
+        buttonGroup = new ButtonGroup();
+
+        buttonGroup.add(radioPF);
+        buttonGroup.add(radioBIF);
+
+
+        PF = new Font("serif", Font.PLAIN, 14);
+        BIF = new Font("serif", Font.BOLD + Font.ITALIC, 14);
+
+        textField.setFont(PF);
+
+        radioPF.addItemListener(new HandlerClass(PF));
+        radioBIF.addItemListener(new HandlerClass(BIF));
+
+
+    }
+
+    private class HandlerClass implements ItemListener{
+
+       private Font font;
+
+       public HandlerClass(Font f){
+           font = f;
+       }
+        public void itemStateChanged(ItemEvent f) {
+
+           textField.setFont(font);
+
+        }
+
+    }
+}
+-----------------------------------------------------------------------------------------------------------
+

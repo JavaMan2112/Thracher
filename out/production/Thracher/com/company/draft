@@ -1,0 +1,87 @@
+
+package com.company;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+
+import javax.swing.*;
+
+public class WindowEngine extends JFrame{
+
+    public JButton button;
+    public JButton buttonColor;
+    public Color color = (Color.WHITE);
+
+
+
+
+
+
+    public WindowEngine() {
+        setTitle("YouTube TOP by NikoPapchenko");
+
+        //Кнопка
+        Icon iconButton2 = new ImageIcon(getClass().getResource("iconButton2.png"));
+        button = new JButton("Кнопка 1", iconButton2);
+        button.setToolTipText("Ссылка на URL");
+
+
+        button.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        try {
+                            Desktop.getDesktop().browse(new URL("http://google.com").toURI());
+
+                        }catch (Exception ee){}
+                    }
+                }
+        );
+        // Конец кнопки
+
+
+        JTabbedPane vkladki = new JTabbedPane();
+
+        getContentPane().add(vkladki);
+
+
+
+        JPanel vkladka1 = new JPanel();
+        vkladka1.setBackground(Color.WHITE);
+        JPanel vkladka2 = new JPanel();
+        vkladka2.setBackground(Color.WHITE);
+        JPanel vkladka3 = new JPanel();
+        vkladka3.setBackground(Color.WHITE);
+
+        buttonColor = new JButton("Нажми для выбора цвета фона");
+        buttonColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                color = JColorChooser.showDialog(null, "Выбери цвет фона POWERED by NikoPapchenko", color);
+                if (color == null)
+                    color = (Color.WHITE);
+                vkladka1.setBackground(color);
+                vkladka2.setBackground(color);
+                vkladka3.setBackground(color);
+            }
+        });
+        add(buttonColor, BorderLayout.PAGE_END);// добавил кнопку для изменения цвета фона
+
+
+
+
+        vkladka1.add(button);// добавил кнопку 1 в список
+
+
+https://www.youtube.com/channel/UCwrfRCqA9wvqp9zCvzLl6Sw
+
+
+
+        vkladki.addTab("           Вкладка 1            ", vkladka1);
+        vkladki.addTab("           Вкладка 2            ", vkladka2);
+        vkladki.addTab("           Вкладка 3            ", vkladka3);
+    }
+}
